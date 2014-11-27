@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/editText_email" />
+        android:id="@+id/editText_email"
+        android:hint="Enter your email"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -20,6 +21,7 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/editText_password"
+        android:hint="Enter your password"
         android:layout_gravity="center_horizontal" />
 
     <Button
@@ -31,7 +33,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10pt" />
+        android:layout_height="20pt" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -46,5 +48,22 @@
         android:layout_height="wrap_content"
         android:text="Registration"
         android:id="@+id/button_registration" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20pt" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="For information about the app, press About."
+        android:id="@+id/textView_about" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="About"
+        android:id="@+id/button_about" />
 
 </LinearLayout>
