@@ -27,12 +27,15 @@
         android:ems="10"
         android:id="@+id/editText_password"
         android:hint="@string/password_text_login"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColorHint="@color/AccentBrighter"
+        android:textColor="@color/Accent"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
+        android:textColor="@color/Accent"
         android:id="@+id/button_login"
         android:onClick="Login"
         android:layout_gravity="center_horizontal"
@@ -47,6 +50,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="If you do not have an accout, please register."
+        android:textColor="@color/Accent"
         android:id="@+id/textView_registration"
         android:layout_gravity="center_horizontal"
         />
@@ -55,6 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Registration"
+        android:textColor="@color/Accent"
         android:onClick="Registration"
         android:id="@+id/button_registration"
         android:background="@color/White"/>
@@ -68,13 +73,16 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="For information about the app, press About."
+        android:textColor="@color/Accent"
         android:id="@+id/textView_about" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="About"
+        android:textColor="@color/Accent"
         android:id="@+id/button_about"
-        android:onClick="About"/>
+        android:onClick="About"
+        android:background="@color/White"/>
 
 </LinearLayout>

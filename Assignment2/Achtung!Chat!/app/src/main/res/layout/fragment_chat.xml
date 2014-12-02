@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/Primary"
     tools:context="com.mattias.achtungchat.ChatFragment">
 
     <TextView
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Blabla"
+        android:textColor="@color/Accent"
         android:id="@+id/textView" />
 
     <TextView
@@ -18,6 +20,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Blalblala"
+        android:textColor="@color/Accent"
         android:id="@+id/textView2"
         android:layout_gravity="right" />
 
@@ -26,6 +29,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Yoyoyoyo"
+        android:textColor="@color/Accent"
         android:id="@+id/textView3" />
 
     <TextView
@@ -33,6 +37,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Yolo"
+        android:textColor="@color/Accent"
         android:id="@+id/textView4"
         android:layout_gravity="right" />
 </LinearLayout>
