@@ -1,8 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="AppTheme" parent="android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowBackground">@color/Primary</item>
+        <item name="android:textColor">@color/Accent</item>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:buttonStyle">@style/MyButtons</item>
+        <item name="android:textViewStyle">@style/MyTextView</item>
+        <item name="android:editTextStyle">@style/MyEditText</item>
     </style>
+
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/Accent</item>
+    </style>
+
+    <style name="MyButtons" parent="@android:style/Widget.Holo.Light.Button">
+        <item name="android:textColor">@color/Accent</item>
+        <item name="android:background">@color/White</item>
+    </style>
+
+    <style name="MyTextView" parent="@android:style/Widget.Holo.Light.TextView">
+        <item name="android:textColor">@color/Accent</item>
+    </style>
+
+    <style name="MyEditText" parent="@android:style/Widget.Holo.Light.EditText">
+        <item name="android:textColorHint">@color/AccentBrighter</item>
+        <item name="android:textColor">@color/Accent</item>
+    </style>
+
+    <!--edittext-->
 
 </resources>
