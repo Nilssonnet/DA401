@@ -3,30 +3,26 @@ package com.mattias.achtungchat;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 
 public class MainActivity extends Activity {
     private FragmentManager fragmentManager;
     private GroupFragment groupFragment;
     private ChatFragment chatFragment;
+    private FragmentTransaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3F51B5")));
-
         fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction = fragmentManager.beginTransaction();
         groupFragment = new GroupFragment();
-        transaction.replace(R.id.container_main, groupFragment);
+        transaction.add(R.id.container_main, groupFragment);
         transaction.commit();
     }
 
@@ -51,9 +47,9 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void Chat(View view){
+    public void changeFragments(String group){
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction = fragmentManager.beginTransaction();
         chatFragment = new ChatFragment();
         transaction.replace(R.id.container_main, chatFragment);
         transaction.addToBackStack("Chat");

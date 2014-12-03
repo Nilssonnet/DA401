@@ -1,18 +1,16 @@
 package com.mattias.achtungchat;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
+        import android.app.Activity;
+        import android.app.FragmentManager;
+        import android.app.FragmentTransaction;
+        import android.content.Intent;
+        import android.os.Bundle;
+        import android.view.Menu;
+        import android.view.MenuInflater;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.EditText;
+        import android.widget.Toast;
 
 
 public class LoginActivity extends Activity {
@@ -21,10 +19,8 @@ public class LoginActivity extends Activity {
     private RegistrationFragment registrationFragment;
     private AboutFragment aboutFragment;
 
-    private String _EMAIL = "e@mail.com";
-    private String _PASSWORD = "pass";
-    private EditText editTextEmailLogin;
-    private EditText editTextPasswordLogin;
+    private String EMAIL = "e@mail.com";    //Used for storing the email from registration
+    private String PASSWORD = "pass";       //Used for storing the password from registration
     private EditText editTextEmailRegistration;
     private EditText editTextPasswordRegistration;
 
@@ -33,7 +29,6 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3F51B5")));
 
         if (savedInstanceState == null) {
             fragmentManager = getFragmentManager();
@@ -65,7 +60,9 @@ public class LoginActivity extends Activity {
 
 
     public void Login(View view){
-        editTextEmailLogin = (EditText) findViewById(R.id.editText_email);
+
+        /*
+                editTextEmailLogin = (EditText) findViewById(R.id.editText_email);
         editTextPasswordLogin = (EditText) findViewById(R.id.editText_password);
 
         String email = editTextEmailLogin.getText().toString();
@@ -85,7 +82,10 @@ public class LoginActivity extends Activity {
             Toast.makeText(getApplicationContext(), "Wrong email or password",
                     Toast.LENGTH_SHORT).show();
         }
-
+         */
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 
     public void Registration(View view){
@@ -109,8 +109,8 @@ public class LoginActivity extends Activity {
                     Toast.LENGTH_SHORT).show();
         }
         else {
-            _EMAIL = email;
-            _PASSWORD = password;
+            EMAIL = email;
+            PASSWORD = password;
             super.onBackPressed();
         }
     }
