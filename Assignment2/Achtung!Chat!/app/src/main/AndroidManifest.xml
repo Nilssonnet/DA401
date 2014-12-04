@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mattias.achtungchat.MainActivity"
+            android:name=".ChatActivity"
             android:label="@string/title_activity_main" >
         </activity>
     </application>
