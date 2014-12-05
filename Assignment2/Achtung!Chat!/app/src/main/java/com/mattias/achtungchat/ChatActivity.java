@@ -8,16 +8,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.firebase.client.Firebase;
 
-public class MainActivity extends Activity {
+
+public class ChatActivity extends Activity {
     private FragmentManager fragmentManager;
     private GroupFragment groupFragment;
     private ChatFragment chatFragment;
+
+    private Firebase mFirebase;
+
     private FragmentTransaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebase = new Firebase("https://da401a.firebaseio.com");
         setContentView(R.layout.activity_main);
         fragmentManager = getFragmentManager();
         transaction = fragmentManager.beginTransaction();

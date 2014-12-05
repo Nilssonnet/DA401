@@ -12,6 +12,10 @@ package com.mattias.achtungchat;
         import android.widget.EditText;
         import android.widget.Toast;
 
+        import com.firebase.client.AuthData;
+        import com.firebase.client.Firebase;
+        import com.firebase.client.FirebaseError;
+
 
 public class LoginActivity extends Activity {
     private FragmentManager fragmentManager;
@@ -19,8 +23,12 @@ public class LoginActivity extends Activity {
     private RegistrationFragment registrationFragment;
     private AboutFragment aboutFragment;
 
+    private Firebase mFirebase;
+
     private String EMAIL = "e@mail.com";    //Used for storing the email from registration
     private String PASSWORD = "pass";       //Used for storing the password from registration
+    private EditText editTextEmailLogin;
+    private EditText editTextPasswordLogin;
     private EditText editTextEmailRegistration;
     private EditText editTextPasswordRegistration;
 
@@ -28,6 +36,9 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(this);
+        mFirebase = new Firebase("https://da401a.firebaseio.com");
+        //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
         setContentView(R.layout.activity_login);
 
         if (savedInstanceState == null) {
@@ -60,9 +71,7 @@ public class LoginActivity extends Activity {
 
 
     public void Login(View view){
-
-        /*
-                editTextEmailLogin = (EditText) findViewById(R.id.editText_email);
+        editTextEmailLogin = (EditText) findViewById(R.id.editText_email);
         editTextPasswordLogin = (EditText) findViewById(R.id.editText_password);
 
         String email = editTextEmailLogin.getText().toString();
@@ -72,10 +81,27 @@ public class LoginActivity extends Activity {
             Toast.makeText(getApplicationContext(), "Enter email and/or password",
                     Toast.LENGTH_SHORT).show();
         }
+        else {
+            mFirebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+                @Override
+                public void onAuthenticated(AuthData authData) {
+                    Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
+                    LoginActivity.this.startActivity(intent);
+                    LoginActivity.this.finish();
+                }
+
+                @Override
+                public void onAuthenticationError(FirebaseError error) {
+                    // Handle errors
+                    errorPrintOut(error);
+                }
+            });
+            }
+        /*
         else if (email.equals(_EMAIL) &&
                 password.equals(_PASSWORD))
         {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, ChatActivity.class);
             startActivity(intent);
             this.finish();
         } else{
@@ -83,9 +109,7 @@ public class LoginActivity extends Activity {
                     Toast.LENGTH_SHORT).show();
         }
          */
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        this.finish();
+
     }
 
     public void Registration(View view){
@@ -109,9 +133,22 @@ public class LoginActivity extends Activity {
                     Toast.LENGTH_SHORT).show();
         }
         else {
-            EMAIL = email;
-            PASSWORD = password;
-            super.onBackPressed();
+            mFirebase.createUser(email, password, new Firebase.ResultHandler() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+                }
+
+                @Override
+                public void onError(FirebaseError error) {
+                    // Handle errors
+                    errorPrintOut(error);
+                }
+            });
+            //EMAIL = email;
+            //PASSWORD = password;
+            //super.onBackPressed();
         }
     }
 
@@ -122,5 +159,53 @@ public class LoginActivity extends Activity {
         transaction.replace(R.id.container_login, aboutFragment);
         transaction.addToBackStack("About");
         transaction.commit();
+    }
+
+    private void errorPrintOut(FirebaseError error){
+        switch (error.getCode()){
+            case FirebaseError.AUTHENTICATION_PROVIDER_DISABLED:
+                Toast.makeText(getApplicationContext(), "AUTHENTICATION_PROVIDER_DISABLED", Toast.LENGTH_SHORT).show();
+                break;
+            case FirebaseError.EMAIL_TAKEN:
+                Toast.makeText(getApplicationContext(), "EMAIL_TAKEN", Toast.LENGTH_SHORT).show();
+                break;
+            case FirebaseError.INVALID_AUTH_ARGUMENTS:
+                Toast.makeText(getApplicationContext(), "INVALID_AUTH_ARGUMENTS", Toast.LENGTH_SHORT).show();
+                break;
+            case FirebaseError.INVALID_CONFIGURATION:
+                Toast.makeText(getApplicationContext(), "INVALID_CONFIGURATION", Toast.LENGTH_SHORT).show();
+                break;
+            case FirebaseError.INVALID_CREDENTIALS:
+                break;
+            case FirebaseError.INVALID_EMAIL:
+                Toast.makeText(getApplicationContext(), "INVALID_CREDENTIALS", Toast.LENGTH_SHORT).show();
+                break;
+            case FirebaseError.INVALID_PASSWORD:
+                Toast.makeText(getApplicationContext(), "INVALID_PASSWORD", Toast.LENGTH_SHORT).show();
+                break;
+            case FirebaseError.INVALID_PROVIDER:
+                Toast.makeText(getApplicationContext(), "INVALID_PROVIDER", Toast.LENGTH_SHORT).show();
+                break;
+            case FirebaseError.INVALID_TOKEN:
+                Toast.makeText(getApplicationContext(), "INVALID_TOKEN", Toast.LENGTH_SHORT).show();
+                break;
+            case FirebaseError.NETWORK_ERROR:
+                Toast.makeText(getApplicationContext(), "NETWORK_ERROR", Toast.LENGTH_SHORT).show();
+                break;
+            case FirebaseError.PREEMPTED:
+                Toast.makeText(getApplicationContext(), "PREEMPTED", Toast.LENGTH_SHORT).show();
+                break;
+            case FirebaseError.PROVIDER_ERROR:
+                Toast.makeText(getApplicationContext(), "PROVIDER_ERROR", Toast.LENGTH_SHORT).show();
+                break;
+            case FirebaseError.UNKNOWN_ERROR:
+                Toast.makeText(getApplicationContext(), "UNKNOWN_ERROR", Toast.LENGTH_SHORT).show();
+                break;
+            case FirebaseError.USER_DOES_NOT_EXIST:
+                Toast.makeText(getApplicationContext(), "USER_DOES_NOT_EXIST", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
     }
 }
