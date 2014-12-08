@@ -37,8 +37,8 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
-        mFirebase = new Firebase("https://da401a.firebaseio.com");
-        //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
+        //mFirebase = new Firebase("https://da401a.firebaseio.com");
+        mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
         setContentView(R.layout.activity_login);
 
         if (savedInstanceState == null) {
