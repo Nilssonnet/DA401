@@ -1,3 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Achtung! Firebase!</string>
+    <string name="action_settings">Settings</string>
+    <string name="empty_about">Nothing to see here. Keep on moving.</string>
+    <string name="email_text_login">"Enter your email</string>
+    <string name="password_text_login">Enter your password</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="email_text_registration">Enter desired email</string>
+    <string name="password_text_registration">Enter desired password</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
