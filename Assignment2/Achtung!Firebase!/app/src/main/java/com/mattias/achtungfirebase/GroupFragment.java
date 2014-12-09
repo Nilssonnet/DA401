@@ -25,8 +25,8 @@ public class GroupFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
-        //mFirebase = new Firebase("https://da401a.firebaseio.com");
+        //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
+        mFirebase = new Firebase("https://da401a.firebaseio.com");
         mFirebase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String s) {

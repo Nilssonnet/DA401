@@ -23,8 +23,8 @@ public class ChatActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
-        //mFirebase = new Firebase("https://da401a.firebaseio.com");
+        mFirebase = new Firebase("https://da401a.firebaseio.com");
+        //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
         setContentView(R.layout.activity_chat);
         fragmentManager = getFragmentManager();
         transaction = fragmentManager.beginTransaction();
