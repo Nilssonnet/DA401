@@ -11,7 +11,29 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView" />
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:id="@+id/listViewGroup" />
 
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="0dip">
+
+        <EditText
+            android:id="@+id/editText_new_group"
+            android:layout_width="280dip"
+            android:layout_height="wrap_content"
+            android:hint="Name of new chatgroup"/>
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/editText_new_group"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="1dip"
+            android:text="Add"
+            android:onClick="AddGroup"/>
+    </RelativeLayout>
 </LinearLayout>

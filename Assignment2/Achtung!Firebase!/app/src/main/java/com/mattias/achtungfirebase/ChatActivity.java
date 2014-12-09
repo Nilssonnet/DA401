@@ -7,14 +7,24 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ChatActivity extends Activity {
     private FragmentManager fragmentManager;
     private GroupFragment groupFragment;
     private ChatFragment chatFragment;
+
+
+    private EditText editTextAddGroup;
+    private EditText editTextSendMessage;
 
     private Firebase mFirebase;
 
@@ -23,14 +33,15 @@ public class ChatActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
-        //mFirebase = new Firebase("https://da401a.firebaseio.com");
+        mFirebase = new Firebase("https://da401a.firebaseio.com");
+        //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
         setContentView(R.layout.activity_chat);
         fragmentManager = getFragmentManager();
         transaction = fragmentManager.beginTransaction();
         groupFragment = new GroupFragment();
-        transaction.add(R.id.container_chat, groupFragment);
-        transaction.commit();
+        //transaction.add(R.id.container_chat, groupFragment);
+        //transaction.commit();
+        getFragmentManager().beginTransaction().add(R.id.container_chat, groupFragment).commit();
     }
 
 
@@ -54,12 +65,45 @@ public class ChatActivity extends Activity {
         }
     }
 
-    public void changeFragments(String group){
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        transaction = fragmentManager.beginTransaction();
-        chatFragment = new ChatFragment();
-        transaction.replace(R.id.container_chat, chatFragment);
-        transaction.addToBackStack("Chat");
-        transaction.commit();
+    public void AddGroup(View view){
+        editTextAddGroup = (EditText) findViewById(R.id.editText_new_group);
+
+
+        String newGroup = editTextAddGroup.getText().toString();
+
+
+        if(newGroup.isEmpty()){
+            Toast.makeText(getApplicationContext(), "You have to enter a name.",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else{
+            String id = mFirebase.push().getName();
+            Map<String, Object> node = new HashMap<String, Object>();
+            Map<String, Object> nodeValues = new HashMap<String, Object>();
+
+            nodeValues.put("name", newGroup);
+            nodeValues.put("id", id);
+            node.put(id, nodeValues);
+
+            mFirebase.updateChildren(node);
+        }
     }
+
+    public void SendMessage(View view){
+        editTextSendMessage = (EditText) findViewById(R.id.editText_send_message);
+
+
+        String message = editTextSendMessage.getText().toString();
+
+
+        if(message.isEmpty()){
+            Toast.makeText(getApplicationContext(), "You can not send an empty message.",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else{
+
+        }
+    }
+
+
 }
