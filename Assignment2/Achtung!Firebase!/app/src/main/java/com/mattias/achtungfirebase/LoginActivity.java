@@ -38,6 +38,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
         mFirebase = new Firebase("https://da401a.firebaseio.com");
+        mFirebase.unauth();
         //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
         setContentView(R.layout.activity_login);
 
@@ -87,7 +88,7 @@ public class LoginActivity extends Activity {
                 public void onAuthenticated(AuthData authData) {
                     Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
                     LoginActivity.this.startActivity(intent);
-                    LoginActivity.this.finish();
+                    //LoginActivity.this.finish();
                 }
 
                 @Override
