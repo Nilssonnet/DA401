@@ -7,17 +7,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.client.Firebase;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ChatFragment extends Fragment {
-
+    private Firebase mFirebase;
 
     public ChatFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mFirebase = new Firebase("https://da401a.firebaseio.com");
+        //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
