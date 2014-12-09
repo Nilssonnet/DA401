@@ -27,6 +27,9 @@ public class GroupFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
         mFirebase = new Firebase("https://da401a.firebaseio.com");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                getActivity(), android.R.layout.simple_list_item_1, listString);
+        setListAdapter(adapter);
         mFirebase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String s) {
@@ -47,6 +50,7 @@ public class GroupFragment extends ListFragment {
         });
     }
 
+    /*
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -55,6 +59,7 @@ public class GroupFragment extends ListFragment {
                 getActivity(), android.R.layout.simple_list_item_1, listString);
         setListAdapter(adapter);
     }
+    */
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
