@@ -27,6 +27,9 @@ public class ChatFragment extends Fragment {
     private View view;
     private ListView chatList;
 
+    private static String groupName;
+    private static String groupId;
+
     public ChatFragment() {
         // Required empty public constructor
     }
@@ -35,11 +38,18 @@ public class ChatFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle("Current chat");
+        if(getArguments() != null) {
+            groupName = getArguments().getString("groupName");
+            groupId = getArguments().getString("groupId");
+        }
         chats = new ArrayList<ChatMessage>();
+        mFirebase.setAndroidContext(getActivity());
+        mFirebase = new Firebase(("https://da401a.firebaseio.com")).child(groupId).child("messages");
+        //mFirebase = new Firebase("https://da401a.firebaseio.com");
+        //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
+
         adapter = new ArrayAdapter<ChatMessage>(
                 getActivity(), android.R.layout.simple_list_item_1, chats);
-        mFirebase = new Firebase("https://da401a.firebaseio.com");
-        //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
         mFirebase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String s) {
@@ -79,5 +89,12 @@ public class ChatFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_chat, container, false);
     }
 
-
+    public static ChatFragment newInstance(Group group){
+        ChatFragment fragment = new ChatFragment();
+        Bundle args = new Bundle();
+        args.putString("groupName", group.getName());
+        args.putString("groupId", group.getId());
+        fragment.setArguments(args);
+        return fragment;
+    }
 }

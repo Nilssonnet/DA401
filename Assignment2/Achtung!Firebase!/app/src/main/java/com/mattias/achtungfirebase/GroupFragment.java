@@ -83,10 +83,11 @@ public class GroupFragment extends Fragment{
         groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Group group = adapter.getItem(position);
                 getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
                 //Toast.makeText(getActivity().getApplicationContext(),
                 //        "Click ListItem number " + (position + 1), Toast.LENGTH_SHORT).show();
-                chatFragment = new ChatFragment();
+                chatFragment = ChatFragment.newInstance(group);
                 transaction = getFragmentManager().beginTransaction();
 
                 transaction.replace(R.id.container_chat, chatFragment);
@@ -94,6 +95,7 @@ public class GroupFragment extends Fragment{
                 transaction.commit();
             }
         });
+
 
         return view;
     }

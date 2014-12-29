@@ -86,6 +86,8 @@ public class ChatActivity extends Activity {
             node.put(id, nodeValues);
 
             mFirebase.updateChildren(node);
+
+            editTextAddGroup.setText("");
         }
     }
 
