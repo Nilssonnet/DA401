@@ -40,4 +40,10 @@ public class ChatMessage {
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
+    /*
+    @Override
+    public String toString(){
+        return message;
+    }
+    */
 }

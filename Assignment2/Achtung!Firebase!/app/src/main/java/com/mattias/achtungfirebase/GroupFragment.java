@@ -42,9 +42,6 @@ public class GroupFragment extends Fragment{
         super.onCreate(savedInstanceState);
         getActivity().setTitle("Group List");
         groups = new ArrayList<Group>();
-        //for (int i = 0; i < listString.length; i++){
-        //    groups.add(listString[i]);
-        //}
         //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
         mFirebase = new Firebase("https://da401a.firebaseio.com");
         adapter = new ArrayAdapter<Group>(
