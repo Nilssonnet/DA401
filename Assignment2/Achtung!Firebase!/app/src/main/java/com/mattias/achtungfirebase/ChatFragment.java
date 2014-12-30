@@ -3,6 +3,7 @@ package com.mattias.achtungfirebase;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,14 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Fragment{ //implements Button.OnClickListener {
     private Firebase mFirebase;
     private ArrayAdapter<ChatMessage> adapter;
     private ArrayList<ChatMessage> chats;
@@ -29,6 +32,7 @@ public class ChatFragment extends Fragment {
 
     private static String groupName;
     private static String groupId;
+
 
     public ChatFragment() {
         // Required empty public constructor
@@ -43,10 +47,8 @@ public class ChatFragment extends Fragment {
             groupId = getArguments().getString("groupId");
         }
         chats = new ArrayList<ChatMessage>();
-        mFirebase.setAndroidContext(getActivity());
+        Firebase.setAndroidContext(getActivity());
         mFirebase = new Firebase(("https://da401a.firebaseio.com")).child(groupId).child("messages");
-        //mFirebase = new Firebase("https://da401a.firebaseio.com");
-        //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
 
         adapter = new ArrayAdapter<ChatMessage>(
                 getActivity(), android.R.layout.simple_list_item_1, chats);
@@ -82,11 +84,10 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        view = inflater.inflate(R.layout.fragment_chat, container, false);
         chatList = (ListView) view.findViewById(R.id.listViewChat);
         chatList.setAdapter(adapter);
         return view;
-        //return inflater.inflate(R.layout.fragment_chat, container, false);
     }
 
     public static ChatFragment newInstance(Group group){
@@ -97,4 +98,20 @@ public class ChatFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    public void sending(String message){
+        Time time = new Time();
+        time.setToNow();
+        String timestamp = time.format("%H:%M");
+        String id = mFirebase.push().getName();
+        String from = mFirebase.getAuth().getProviderData().get("email").toString();
+        Map<String, Object> chatObjects = new HashMap<String, Object>();
+        Map<String, Object> chatMessage = new HashMap<String, Object>();
+        chatMessage.put("from", from);
+        chatMessage.put("message", message);
+        chatMessage.put("time", timestamp);
+        chatObjects.put(id, chatMessage);
+        mFirebase.updateChildren(chatObjects);
+    }
+
 }

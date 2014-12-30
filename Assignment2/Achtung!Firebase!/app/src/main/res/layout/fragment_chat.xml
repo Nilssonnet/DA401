@@ -27,13 +27,13 @@
             android:hint="Message to send"/>
 
         <Button
-            android:id="@+id/send"
+            android:id="@+id/button_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignRight="@id/editText_send_message"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="1dip"
             android:text="Send"
-            android:onClick="SendMessage"/>
+            android:onClick="sendMessage"/>
     </RelativeLayout>
 </LinearLayout>

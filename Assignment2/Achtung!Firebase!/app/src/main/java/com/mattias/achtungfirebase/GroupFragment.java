@@ -1,6 +1,5 @@
 package com.mattias.achtungfirebase;
 
-
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -9,9 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -19,9 +16,6 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,14 +29,11 @@ public class GroupFragment extends Fragment{
     private View view;
     private ListView groupList;
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle("Group List");
         groups = new ArrayList<Group>();
-        //mFirebase = new Firebase("https://torid-torch-8342.firebaseio.com/");
         mFirebase = new Firebase("https://da401a.firebaseio.com");
         adapter = new ArrayAdapter<Group>(
                 getActivity(), android.R.layout.simple_list_item_1, groups);
@@ -79,26 +70,18 @@ public class GroupFragment extends Fragment{
         groupList = (ListView) view.findViewById(R.id.listViewGroup);
         groupList.setAdapter(adapter);
 
-
         groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Group group = adapter.getItem(position);
                 getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-                //Toast.makeText(getActivity().getApplicationContext(),
-                //        "Click ListItem number " + (position + 1), Toast.LENGTH_SHORT).show();
                 chatFragment = ChatFragment.newInstance(group);
                 transaction = getFragmentManager().beginTransaction();
-
                 transaction.replace(R.id.container_chat, chatFragment);
                 transaction.addToBackStack("Chat");
                 transaction.commit();
             }
         });
-
-
         return view;
     }
-
-
 }

@@ -20,11 +20,9 @@ import java.util.Map;
 public class ChatActivity extends Activity {
     private FragmentManager fragmentManager;
     private GroupFragment groupFragment;
-    private ChatFragment chatFragment;
 
 
     private EditText editTextAddGroup;
-    private EditText editTextSendMessage;
 
     private Firebase mFirebase;
 
@@ -39,11 +37,8 @@ public class ChatActivity extends Activity {
         fragmentManager = getFragmentManager();
         transaction = fragmentManager.beginTransaction();
         groupFragment = new GroupFragment();
-        //transaction.add(R.id.container_chat, groupFragment);
-        //transaction.commit();
         getFragmentManager().beginTransaction().add(R.id.container_chat, groupFragment).commit();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -67,11 +62,7 @@ public class ChatActivity extends Activity {
 
     public void AddGroup(View view){
         editTextAddGroup = (EditText) findViewById(R.id.editText_new_group);
-
-
         String newGroup = editTextAddGroup.getText().toString();
-
-
         if(newGroup.isEmpty()){
             Toast.makeText(getApplicationContext(), "You have to enter a name.",
                     Toast.LENGTH_SHORT).show();
@@ -80,32 +71,25 @@ public class ChatActivity extends Activity {
             String id = mFirebase.push().getName();
             Map<String, Object> node = new HashMap<String, Object>();
             Map<String, Object> nodeValues = new HashMap<String, Object>();
-
             nodeValues.put("name", newGroup);
             nodeValues.put("id", id);
             node.put(id, nodeValues);
-
             mFirebase.updateChildren(node);
-
             editTextAddGroup.setText("");
         }
     }
 
-    public void SendMessage(View view){
-        editTextSendMessage = (EditText) findViewById(R.id.editText_send_message);
-
-
+    public void sendMessage(View view){
+        EditText editTextSendMessage = (EditText) findViewById(R.id.editText_send_message);
         String message = editTextSendMessage.getText().toString();
-
-
         if(message.isEmpty()){
             Toast.makeText(getApplicationContext(), "You can not send an empty message.",
                     Toast.LENGTH_SHORT).show();
         }
         else{
-
+            ChatFragment chatFragment = (ChatFragment) getFragmentManager().findFragmentById(R.id.container_chat);
+            chatFragment.sending(message);
+            editTextSendMessage.setText("");
         }
     }
-
-
 }

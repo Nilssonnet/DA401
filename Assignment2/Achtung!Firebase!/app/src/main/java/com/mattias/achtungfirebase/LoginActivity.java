@@ -88,7 +88,6 @@ public class LoginActivity extends Activity {
                 public void onAuthenticated(AuthData authData) {
                     Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
                     LoginActivity.this.startActivity(intent);
-                    //LoginActivity.this.finish();
                 }
 
                 @Override
@@ -98,19 +97,6 @@ public class LoginActivity extends Activity {
                 }
             });
         }
-        /*
-        else if (email.equals(_EMAIL) &&
-                password.equals(_PASSWORD))
-        {
-            Intent intent = new Intent(this, ChatActivity.class);
-            startActivity(intent);
-            this.finish();
-        } else{
-            Toast.makeText(getApplicationContext(), "Wrong email or password",
-                    Toast.LENGTH_SHORT).show();
-        }
-         */
-
     }
 
     public void Registration(View view){
@@ -147,9 +133,6 @@ public class LoginActivity extends Activity {
                     errorPrintOut(error);
                 }
             });
-            //EMAIL = email;
-            //PASSWORD = password;
-            //super.onBackPressed();
         }
     }
 
