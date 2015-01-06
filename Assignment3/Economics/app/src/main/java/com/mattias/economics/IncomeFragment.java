@@ -12,12 +12,23 @@ import android.view.ViewGroup;
  * A simple {@link Fragment} subclass.
  */
 public class IncomeFragment extends Fragment {
-
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
     public IncomeFragment() {
         // Required empty public constructor
     }
 
+    public static IncomeFragment newInstance(String param1, String param2) {
+        IncomeFragment fragment = new IncomeFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
