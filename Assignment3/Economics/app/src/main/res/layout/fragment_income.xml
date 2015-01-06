@@ -15,13 +15,13 @@ tools:context="com.mattias.economics.IncomeFragment">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Enter type of income (eg salary, sold car):"
         android:id="@+id/textViewIncomeType" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextIncomeType" />
+        android:hint="Eg salary or sold a car."
+        android:id="@+id/editTextIncomeTitle" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,5 +47,17 @@ tools:context="com.mattias.economics.IncomeFragment">
         android:layout_height="wrap_content"
         android:text="Done"
         android:id="@+id/buttonIncome"
+        android:layout_gravity="center_horizontal" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25pt"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show list of incomes"
+        android:id="@+id/buttonListIncomes"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

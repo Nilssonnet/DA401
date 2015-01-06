@@ -10,21 +10,11 @@ import android.app.ActionBar;
 
 
 public class MainActivity extends Activity {
-    private FragmentManager fragmentManager;
-    private SummaryFragment summaryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*if (savedInstanceState == null) {
-            fragmentManager = getFragmentManager();
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            summaryFragment = new SummaryFragment();
-            transaction.replace(R.id.container_main, summaryFragment);
-            transaction.commit();
-            getActionBar().setDisplayHomeAsUpEnabled(false);
-        }*/
     }
 
 
@@ -37,31 +27,18 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-        */
         switch( item.getItemId()){
 
             case R.id.action_summary:
-                getFragmentManager().beginTransaction().replace(R.id.container_main, SummaryFragment.newInstance("", ""), "blank").addToBackStack("blank").commit();
+                getFragmentManager().beginTransaction().replace(R.id.container_main, SummaryFragment.newInstance(), "summary").addToBackStack("summary").commit();
                 return true;
 
             case R.id.action_income:
-                getFragmentManager().beginTransaction().replace(R.id.container_main, IncomeFragment.newInstance("", ""), "item").addToBackStack("item").commit();
+                getFragmentManager().beginTransaction().replace(R.id.container_main, IncomeFragment.newInstance(), "income").addToBackStack("income").commit();
                 return true;
 
             case R.id.action_expense:
-                getFragmentManager().beginTransaction().replace(R.id.container_main, ExpenseFragment.newInstance("", ""), "item").addToBackStack("item").commit();
+                getFragmentManager().beginTransaction().replace(R.id.container_main, ExpenseFragment.newInstance(), "expense").addToBackStack("expense").commit();
                 return true;
 
             default:

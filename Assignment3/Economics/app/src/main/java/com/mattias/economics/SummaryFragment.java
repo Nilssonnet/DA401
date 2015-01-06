@@ -6,27 +6,22 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SummaryFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
+    private DBController dbController;
 
     public SummaryFragment() {
         // Required empty public constructor
     }
 
-    public static SummaryFragment newInstance(String param1, String param2) {
+    public static SummaryFragment newInstance() {
         SummaryFragment fragment = new SummaryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -34,8 +29,21 @@ public class SummaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_summary, container, false);
+        View root = inflater.inflate(R.layout.fragment_summary, container, false);
+        TextView textViewInc = (TextView) root.findViewById(R.id.textViewIncomes);
+        TextView textViewExp = (TextView) root.findViewById(R.id.textViewExpenses);
+        TextView textViewSum = (TextView) root.findViewById(R.id.textViewSummary);
+        textViewInc.setText("Total incomes:\n" + dbController.getIncomesAmount() + "\n");
+        textViewExp.setText("Total expenses:\n" + (- dbController.getExpensesAmount()) + "\n");
+        textViewSum.setText("Total sum:\n" +
+                (dbController.getIncomesAmount() - dbController.getExpensesAmount()) + "\n");
+        return root;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dbController = new DBController(getActivity());
+    }
 
 }
