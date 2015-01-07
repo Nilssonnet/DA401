@@ -1,0 +1,51 @@
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mattias.boombox.PlayFragment">
+
+
+<Space
+    android:layout_width="20px"
+    android:layout_height="450px"
+    android:layout_row="0"
+    android:layout_column="2" />
+
+<Button
+    style="?android:attr/buttonStyleSmall"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Play/Pause"
+    android:id="@+id/buttonPlayPause"
+    android:layout_row="1"
+    android:layout_column="0" />
+
+<Button
+    style="?android:attr/buttonStyleSmall"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Stop"
+    android:id="@+id/buttonStop"
+    android:layout_row="1"
+    android:layout_column="1" />
+
+<Button
+    style="?android:attr/buttonStyleSmall"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Backward"
+    android:id="@+id/buttonBackward"
+    android:layout_row="1"
+    android:layout_column="6" />
+
+<Button
+    style="?android:attr/buttonStyleSmall"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Forward"
+    android:id="@+id/buttonForward"
+    android:layout_row="1"
+    android:layout_column="7" />
+
+</GridLayout>
