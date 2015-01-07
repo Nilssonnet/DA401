@@ -44,6 +44,19 @@ public class SummaryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbController = new DBController(getActivity());
+        dbController.open();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        dbController.open();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        dbController.close();
     }
 
 }

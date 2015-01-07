@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by Mattias on 2015-01-06.
@@ -42,7 +41,6 @@ public class DBController extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(TAG,"Upgrading from version"+oldVersion+"to"+newVersion);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_INCOME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSE);
         onCreate(db);
@@ -88,10 +86,28 @@ public class DBController extends SQLiteOpenHelper {
     }
 
     public int getIncomesAmount(){
-        return 1000;
+        int total = 0;
+        Cursor c = db.rawQuery("SELECT sum(Amount) as AmountSumIncomes FROM Incomes", null);
+
+        if (c != null && c.moveToFirst());
+
+        do {
+            total=c.getInt(0);
+        } while (c.moveToNext());
+
+        return total;
     }
 
     public int getExpensesAmount(){
-        return 500;
+        int total = 0;
+        Cursor c = db.rawQuery("SELECT sum(Amount) as AmountSumExpenses FROM Expenses", null);
+
+        if (c != null && c.moveToFirst());
+
+        do {
+            total=c.getInt(0);
+        } while (c.moveToNext());
+
+        return total;
     }
 }
