@@ -83,7 +83,7 @@ public class PlayFragment extends Fragment {
                 Toast.LENGTH_SHORT).show();
     }
 
-    private void musicPlayer(int selection){
+    public void musicPlayer(int selection){
         switch (selection){
             case 1:
                 if (play) {

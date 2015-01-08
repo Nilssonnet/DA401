@@ -2,23 +2,44 @@ package com.mattias.boombox;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity implements SensorEventListener, Runnable{
     private FragmentManager fragmentManager;
     private PlayFragment playFragment;
     private SensorManager sensorManager;
+    private Sensor senAccelerometer;
+
+    private final static int SAMPLING_TIME = 20;
+
+    private long lastUpdate = 0, timeFirstKnock = 0, knockingTime = 1500;
+    private final static double KNOCK_THRESHOLD = 0.04;
+    private float last_z, result = 0, avgValue = 0;
+    private static final int SHAKE_THRESHOLD = 600;
+
+    int amountOfKnocks = 0;
+
+    private boolean knockActivated = false;
+
+    private ArrayList<Float> arraylistValues = new ArrayList<Float>();
+
+    private static final String TAG = "mainactivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +52,13 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
             transaction.replace(R.id.container_main, playFragment);
             transaction.commit();
         }
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensorManager.registerListener(this,
-                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL);
+        //sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        //sensorManager.registerListener(this,
+        //        sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+        //        SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        senAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
     }
 
 
@@ -58,6 +82,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     }
 
     public void onSensorChanged(SensorEvent event){
+        /*
         // check sensor type
         if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER){
 
@@ -68,7 +93,64 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
 
             playFragment.sensorListeners(z);
         }
+    */
+        Sensor mySensor = event.sensor;
+        long curTime = System.currentTimeMillis();
+        if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            float z = event.values[2];
+            arraylistValues.add(z);
 
+
+            if ((curTime - lastUpdate) > 1000) {
+                lastUpdate = curTime;
+                for (Float value : arraylistValues) {
+                    avgValue += value;
+                    //Log.d(TAG, "avgValue " + avgValue);
+                }
+
+                if (amountOfKnocks > 4) {
+                    knockActivated = false;
+                    amountOfKnocks = 0;
+                    timeFirstKnock = 0;
+                }
+
+                avgValue /= arraylistValues.size();
+                avgValue = Math.abs(avgValue - last_z);
+                Log.d(TAG, "avgValue " + avgValue);
+                if (avgValue > KNOCK_THRESHOLD) {
+                    timeFirstKnock = System.currentTimeMillis();
+                    knockActivated = true;
+                    amountOfKnocks++;
+                }
+                avgValue = 0;
+                last_z = z;
+                //if(result < )
+
+            }
+        }
+        if (curTime - timeFirstKnock > knockingTime && knockActivated) {
+            //Log.d(TAG, "amountOfKnocks " + amountOfKnocks);
+            Toast.makeText(this, "" + amountOfKnocks,
+                    Toast.LENGTH_SHORT).show();
+            avgValue = 0;
+            knockActivated = false;
+            amountOfKnocks = 0;
+            timeFirstKnock = 0;
+        }
+
+        //Toast.makeText(this, "" + amountOfKnocks,
+        //        Toast.LENGTH_SHORT).show();
+        //playFragment.musicPlayer(amountOfKnocks);
+    }
+
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void run(){
