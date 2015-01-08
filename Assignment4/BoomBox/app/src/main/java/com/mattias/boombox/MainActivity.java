@@ -32,10 +32,10 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     private final static double KNOCK_THRESHOLD = 0.04;
     private float last_z, result = 0, avgValue = 0;
     private static final int SHAKE_THRESHOLD = 600;
-
+    float corrected_value = 0;
     int amountOfKnocks = 0;
 
-    private boolean knockActivated = false;
+    private boolean knockActivated = false, firstStartup = true;
 
     private ArrayList<Float> arraylistValues = new ArrayList<Float>();
 
@@ -82,6 +82,85 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     }
 
     public void onSensorChanged(SensorEvent event){
+        if(firstStartup)
+            firstStartup = false;
+        else{
+            float zValue = event.values[2];
+            arraylistValues.add(zValue);
+            long currentTime = System.currentTimeMillis();
+            if ((currentTime - lastUpdate) > SAMPLING_TIME) {
+                lastUpdate = currentTime;
+                for (Float value : arraylistValues) {
+
+                    avgValue += value;
+
+                }
+                if (amountOfKnocks > 4) {
+                    knockActivated = false;
+                    amountOfKnocks = 0;
+                    timeFirstKnock = 0;
+                    arraylistValues.clear();
+                }
+                avgValue /= arraylistValues.size();
+
+
+                //avgValue = Math.abs(avgValue - SensorManager.GRAVITY_EARTH);
+                avgValue = Math.abs(avgValue - last_z);
+                //Log.d(TAG, "avgValue " + avgValue);
+
+                if (avgValue > 0.20) {
+                    timeFirstKnock = System.currentTimeMillis();
+                    knockActivated = true;
+                    amountOfKnocks++;
+                    //Log.d(TAG, "avgValue " + avgValue);
+                }
+                avgValue = 0;
+                last_z = zValue;
+            }
+            if (currentTime - timeFirstKnock > knockingTime && knockActivated) {
+                playFragment.musicPlayer(amountOfKnocks);
+                //Log.d(TAG, "amountOfKnocks " + amountOfKnocks);
+                avgValue = 0;
+                knockActivated = false;
+                amountOfKnocks = 0;
+                timeFirstKnock = 0;
+                arraylistValues.clear();
+            }
+        }
+
+        /*
+        if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER) {
+            long curTime = System.currentTimeMillis();
+
+            float z = event.values[2];
+            if ((curTime - lastUpdate) > 1000) {
+                lastUpdate = curTime;
+                corrected_value = Math.abs(z - SensorManager.GRAVITY_EARTH);
+                if (amountOfKnocks > 4) {
+                    knockActivated = false;
+                    amountOfKnocks = 0;
+                    timeFirstKnock = 0;
+                }
+
+                if (corrected_value > 1.40) {
+                    timeFirstKnock = System.currentTimeMillis();
+                    knockActivated = true;
+                    amountOfKnocks++;
+                    Log.d(TAG, "corrected_value " + corrected_value);
+                }
+
+                }
+
+            if (curTime - timeFirstKnock > knockingTime && knockActivated) {
+                Log.d(TAG, "amountOfKnocks " + amountOfKnocks);
+                //Toast.makeText(this, "" + amountOfKnocks,
+                //        Toast.LENGTH_SHORT).show();
+                knockActivated = false;
+                amountOfKnocks = 0;
+                timeFirstKnock = 0;
+            }
+        }
+*/
         /*
         // check sensor type
         if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER){
@@ -94,39 +173,43 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
             playFragment.sensorListeners(z);
         }
     */
+        /*
         Sensor mySensor = event.sensor;
         long curTime = System.currentTimeMillis();
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float z = event.values[2];
-            arraylistValues.add(z);
+            if(z>8.65){
+                arraylistValues.add(z);
 
 
-            if ((curTime - lastUpdate) > 1000) {
-                lastUpdate = curTime;
-                for (Float value : arraylistValues) {
-                    avgValue += value;
-                    //Log.d(TAG, "avgValue " + avgValue);
+                if ((curTime - lastUpdate) > 1000) {
+                    lastUpdate = curTime;
+                    for (Float value : arraylistValues) {
+                        avgValue += value;
+                        //Log.d(TAG, "avgValue " + avgValue);
+                    }
+
+                    if (amountOfKnocks > 4) {
+                        knockActivated = false;
+                        amountOfKnocks = 0;
+                        timeFirstKnock = 0;
+                    }
+
+                    avgValue /= arraylistValues.size();
+                    avgValue = Math.abs(avgValue - last_z);
+                    Log.d(TAG, "avgValue " + avgValue);
+                    if (avgValue > KNOCK_THRESHOLD) {
+                        timeFirstKnock = System.currentTimeMillis();
+                        knockActivated = true;
+                        amountOfKnocks++;
+                    }
+                    avgValue = 0;
+                    last_z = z;
+                    //if(result < )
+
                 }
-
-                if (amountOfKnocks > 4) {
-                    knockActivated = false;
-                    amountOfKnocks = 0;
-                    timeFirstKnock = 0;
-                }
-
-                avgValue /= arraylistValues.size();
-                avgValue = Math.abs(avgValue - last_z);
-                Log.d(TAG, "avgValue " + avgValue);
-                if (avgValue > KNOCK_THRESHOLD) {
-                    timeFirstKnock = System.currentTimeMillis();
-                    knockActivated = true;
-                    amountOfKnocks++;
-                }
-                avgValue = 0;
-                last_z = z;
-                //if(result < )
-
             }
+
         }
         if (curTime - timeFirstKnock > knockingTime && knockActivated) {
             //Log.d(TAG, "amountOfKnocks " + amountOfKnocks);
@@ -137,6 +220,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
             amountOfKnocks = 0;
             timeFirstKnock = 0;
         }
+        */
 
         //Toast.makeText(this, "" + amountOfKnocks,
         //        Toast.LENGTH_SHORT).show();

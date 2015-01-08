@@ -60,7 +60,7 @@ public class PlayFragment extends Fragment {
         buttonStop.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                musicPlayer(2);
+                musicPlayer(4);
             }
         });
         buttonBackward.setOnClickListener(new View.OnClickListener(){
@@ -72,7 +72,7 @@ public class PlayFragment extends Fragment {
         buttonForward.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                musicPlayer(4);
+                musicPlayer(2);
             }
         });
     }
@@ -85,6 +85,7 @@ public class PlayFragment extends Fragment {
 
     public void musicPlayer(int selection){
         switch (selection){
+            //Play/pause
             case 1:
                 if (play) {
                     play = false;
@@ -97,16 +98,19 @@ public class PlayFragment extends Fragment {
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
+            //Forward
             case 2:
-                Toast.makeText(getActivity(), "Stop",
+                Toast.makeText(getActivity(), "Forward",
                         Toast.LENGTH_SHORT).show();
                 break;
+            //Backward
             case 3:
                 Toast.makeText(getActivity(), "Backward",
                         Toast.LENGTH_SHORT).show();
                 break;
+            //Stop
             case 4:
-                Toast.makeText(getActivity(), "Forward",
+                Toast.makeText(getActivity(), "Stop",
                         Toast.LENGTH_SHORT).show();
                 break;
             default:
