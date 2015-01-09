@@ -26,6 +26,8 @@ public class PlayFragment extends Fragment {
     private ArrayList<Integer> songList = new ArrayList<Integer>();
     private int songCounter = 0, currentSong;
 
+    private boolean firstPlay = true;
+
     public PlayFragment() {
         // Required empty public constructor
     }
@@ -33,9 +35,10 @@ public class PlayFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        songList.add(R.raw.game_of_thrones);
-        songList.add(R.raw.the_big_bang_theory);
-        songList.add(R.raw.the_simpsons);
+        songList.add(R.raw.airwolf);
+        songList.add(R.raw.kids_in_the_hall);
+        songList.add(R.raw.mission_impossible);
+        songList.add(R.raw.star_wars);
         currentSong = songList.get(songCounter);
     }
 
@@ -80,7 +83,7 @@ public class PlayFragment extends Fragment {
     }
 
     private int nextSong() {
-        if (songCounter > 2) {
+        if (songCounter > songList.size()) {
             songCounter = 0;
         } else {
             currentSong = songList.get(songCounter);
@@ -91,7 +94,7 @@ public class PlayFragment extends Fragment {
 
     private int prevSong() {
         if (songCounter < 0) {
-            songCounter = 2;
+            songCounter = songList.size();
         } else {
             currentSong = songList.get(songCounter);
             songCounter--;
@@ -100,52 +103,59 @@ public class PlayFragment extends Fragment {
     }
 
     public void musicPlayer(int selection){
-        switch (selection){
-            //Play/pause
-            case 1:
-                if (mediaPlayer == null || !mediaPlayer.isPlaying()) {
-                    Toast.makeText(getActivity(), "Play",
-                            Toast.LENGTH_SHORT).show();
-                    mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), currentSong);
-                    mediaPlayer.start();
-                } else if(mediaPlayer != null && mediaPlayer.isPlaying()) {
-                    Toast.makeText(getActivity(), "Pause",
-                            Toast.LENGTH_SHORT).show();
-                    mediaPlayer.pause();
-                }
-
-                break;
-            //Forward
-            case 2:
-                Toast.makeText(getActivity(), "Forward",
-                        Toast.LENGTH_SHORT).show();
-                if (mediaPlayer != null) {
-                    mediaPlayer.stop();
-                    mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), nextSong());
-                    mediaPlayer.start();
-                }
-                break;
-            //Backward
-            case 3:
-                Toast.makeText(getActivity(), "Backward",
-                        Toast.LENGTH_SHORT).show();
-                if (mediaPlayer != null) {
-                    mediaPlayer.stop();
-                    mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), prevSong());
-                    mediaPlayer.start();
-                }
-                break;
-            //Stop
-            case 4:
-                Toast.makeText(getActivity(), "Stop",
-                        Toast.LENGTH_SHORT).show();
-                if (mediaPlayer != null) {
-                    mediaPlayer.stop();
-                }
-                break;
-            default:
-                break;
+        if(firstPlay){
+            firstPlay = false;
         }
+        else{
+            switch (selection){
+                //Play/pause
+                case 1:
+                    if (mediaPlayer == null || !mediaPlayer.isPlaying()) {
+                        Toast.makeText(getActivity(), "Play",
+                                Toast.LENGTH_SHORT).show();
+                        mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), currentSong);
+                        mediaPlayer.start();
+                    } else if(mediaPlayer != null && mediaPlayer.isPlaying()) {
+                        Toast.makeText(getActivity(), "Pause",
+                                Toast.LENGTH_SHORT).show();
+                        mediaPlayer.pause();
+                    }
+
+                    break;
+                //Forward
+                case 2:
+                    Toast.makeText(getActivity(), "Forward",
+                            Toast.LENGTH_SHORT).show();
+                    if (mediaPlayer != null) {
+                        mediaPlayer.stop();
+                        mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), nextSong());
+                        mediaPlayer.start();
+                    }
+                    break;
+                //Backward
+                case 3:
+                    Toast.makeText(getActivity(), "Backward",
+                            Toast.LENGTH_SHORT).show();
+                    if (mediaPlayer != null) {
+                        mediaPlayer.stop();
+                        mediaPlayer = MediaPlayer.create(getActivity().getBaseContext(), prevSong());
+                        mediaPlayer.start();
+                    }
+                    break;
+                //Stop
+                case 4:
+                    Toast.makeText(getActivity(), "Stop",
+                            Toast.LENGTH_SHORT).show();
+                    if (mediaPlayer != null) {
+                        mediaPlayer.stop();
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
     }
 
 }

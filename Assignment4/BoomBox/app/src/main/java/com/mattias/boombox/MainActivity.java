@@ -25,7 +25,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     private int amountOfKnocks = 0;
     private long lastUpdate = 0, timeFirstKnock = 0, knockingTime = 1500;
     private float last_z, avgValue = 0;
-    private final static double KNOCK_THRESHOLD = 0.3;
+    private final static double KNOCK_THRESHOLD = 0.6;
 
     private boolean knockActivated = false, firstStartup = true;
 
@@ -70,42 +70,42 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     }
 
     public void onSensorChanged(SensorEvent event){
-        if(firstStartup)
-            firstStartup = false;
-        else{
-            float zValue = event.values[2];
-            arraylistValues.add(zValue);
-            long currentTime = System.currentTimeMillis();
-            if ((currentTime - lastUpdate) > SAMPLING_TIME) {
-                lastUpdate = currentTime;
-                for (Float value : arraylistValues) {
+        float zValue = event.values[2];
+        arraylistValues.add(zValue);
+        long currentTime = System.currentTimeMillis();
+        if ((currentTime - lastUpdate) > SAMPLING_TIME) {
+            lastUpdate = currentTime;
+            for (Float value : arraylistValues) {
 
-                    avgValue += value;
+                avgValue += value;
 
-                }
-                if (amountOfKnocks > 4) {
-                    knockActivated = false;
-                    amountOfKnocks = 0;
-                    timeFirstKnock = 0;
-                    arraylistValues.clear();
-                }
-                avgValue /= arraylistValues.size();
-
-
-                //avgValue = Math.abs(avgValue - SensorManager.GRAVITY_EARTH);
-                avgValue = Math.abs(avgValue - last_z);
-                //Log.d(TAG, "avgValue " + avgValue);
-
-                if (avgValue > KNOCK_THRESHOLD) {
-                    timeFirstKnock = System.currentTimeMillis();
-                    knockActivated = true;
-                    amountOfKnocks++;
-                    //Log.d(TAG, "avgValue " + avgValue);
-                }
-                avgValue = 0;
-                last_z = zValue;
             }
-            if (currentTime - timeFirstKnock > knockingTime && knockActivated) {
+            if (amountOfKnocks > 4) {
+                knockActivated = false;
+                amountOfKnocks = 0;
+                timeFirstKnock = 0;
+                arraylistValues.clear();
+            }
+            avgValue /= arraylistValues.size();
+
+
+            avgValue = Math.abs(avgValue - last_z);
+            Log.d(TAG, "avgValue " + avgValue);
+
+            if (avgValue > KNOCK_THRESHOLD) {
+                timeFirstKnock = System.currentTimeMillis();
+                knockActivated = true;
+                amountOfKnocks++;
+                //Log.d(TAG, "avgValue " + avgValue);
+            }
+            avgValue = 0;
+            last_z = zValue;
+        }
+        if (currentTime - timeFirstKnock > knockingTime && knockActivated) {
+            if (firstStartup){
+                firstStartup=false;
+            }
+            else{
                 playFragment.musicPlayer(amountOfKnocks);
                 //Log.d(TAG, "amountOfKnocks " + amountOfKnocks);
                 avgValue = 0;
@@ -114,106 +114,10 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
                 timeFirstKnock = 0;
                 arraylistValues.clear();
             }
-        }
-
-        /*
-        if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER) {
-            long curTime = System.currentTimeMillis();
-
-            float z = event.values[2];
-            if ((curTime - lastUpdate) > 1000) {
-                lastUpdate = curTime;
-                corrected_value = Math.abs(z - SensorManager.GRAVITY_EARTH);
-                if (amountOfKnocks > 4) {
-                    knockActivated = false;
-                    amountOfKnocks = 0;
-                    timeFirstKnock = 0;
-                }
-
-                if (corrected_value > 1.40) {
-                    timeFirstKnock = System.currentTimeMillis();
-                    knockActivated = true;
-                    amountOfKnocks++;
-                    Log.d(TAG, "corrected_value " + corrected_value);
-                }
-
-                }
-
-            if (curTime - timeFirstKnock > knockingTime && knockActivated) {
-                Log.d(TAG, "amountOfKnocks " + amountOfKnocks);
-                //Toast.makeText(this, "" + amountOfKnocks,
-                //        Toast.LENGTH_SHORT).show();
-                knockActivated = false;
-                amountOfKnocks = 0;
-                timeFirstKnock = 0;
-            }
-        }
-*/
-        /*
-        // check sensor type
-        if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER){
-
-            // assign directions
-            //float x=event.values[0];
-            //float y=event.values[1];
-            float z=event.values[2];
-
-            playFragment.sensorListeners(z);
-        }
-    */
-        /*
-        Sensor mySensor = event.sensor;
-        long curTime = System.currentTimeMillis();
-        if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            float z = event.values[2];
-            if(z>8.65){
-                arraylistValues.add(z);
-
-
-                if ((curTime - lastUpdate) > 1000) {
-                    lastUpdate = curTime;
-                    for (Float value : arraylistValues) {
-                        avgValue += value;
-                        //Log.d(TAG, "avgValue " + avgValue);
-                    }
-
-                    if (amountOfKnocks > 4) {
-                        knockActivated = false;
-                        amountOfKnocks = 0;
-                        timeFirstKnock = 0;
-                    }
-
-                    avgValue /= arraylistValues.size();
-                    avgValue = Math.abs(avgValue - last_z);
-                    Log.d(TAG, "avgValue " + avgValue);
-                    if (avgValue > KNOCK_THRESHOLD) {
-                        timeFirstKnock = System.currentTimeMillis();
-                        knockActivated = true;
-                        amountOfKnocks++;
-                    }
-                    avgValue = 0;
-                    last_z = z;
-                    //if(result < )
-
-                }
-            }
 
         }
-        if (curTime - timeFirstKnock > knockingTime && knockActivated) {
-            //Log.d(TAG, "amountOfKnocks " + amountOfKnocks);
-            Toast.makeText(this, "" + amountOfKnocks,
-                    Toast.LENGTH_SHORT).show();
-            avgValue = 0;
-            knockActivated = false;
-            amountOfKnocks = 0;
-            timeFirstKnock = 0;
-        }
-        */
-
-        //Toast.makeText(this, "" + amountOfKnocks,
-        //        Toast.LENGTH_SHORT).show();
-        //playFragment.musicPlayer(amountOfKnocks);
     }
+
 
     protected void onPause() {
         super.onPause();
