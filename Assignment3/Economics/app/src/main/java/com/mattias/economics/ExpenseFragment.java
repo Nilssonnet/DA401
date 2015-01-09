@@ -1,6 +1,7 @@
 package com.mattias.economics;
 
 
+import android.app.FragmentTransaction;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -38,32 +39,17 @@ public class ExpenseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_expense, container, false);
-
-        title = (EditText) view.findViewById(R.id.editTextExpenseTitle);
-        amount = (EditText) view.findViewById(R.id.editTextExpenseAmount);
         listExpenses = (ListView) view.findViewById(R.id.listViewExpenses);
         listExpenses.setAdapter(adapter);
-
-        Button buttonInput = (Button) view.findViewById(R.id.buttonExpense);
+        Button buttonInput = (Button) view.findViewById(R.id.buttonExpenseInput);
         buttonInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newTitle = title.getText().toString();
-                String newAmount = amount.getText().toString();
-                if(newTitle.isEmpty() || newAmount.isEmpty()){
-                    Toast.makeText(getActivity(), "You have to fill in both fields",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Calendar calendar = Calendar.getInstance();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                    String date = simpleDateFormat.format(calendar.getTime());
-                    long id = dbController.dataExpenses(newTitle, newAmount, date);
-                    Cursor c = dbController.getExpenses();
-                    adapter = new EconomicsAdapter(getActivity(), c, true);
-                    listExpenses.setAdapter(adapter);
-                    title.setText("");
-                    amount.setText("");
-                }
+                ExpenseInputFragment expenseInputFragment = ExpenseInputFragment.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container_main, expenseInputFragment);
+                transaction.addToBackStack("Expense input");
+                transaction.commit();
             }
         });
         return view;

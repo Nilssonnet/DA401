@@ -10,30 +10,22 @@ import android.hardware.SensorManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity implements SensorEventListener, Runnable{
+public class MainActivity extends ActionBarActivity implements SensorEventListener{
     private FragmentManager fragmentManager;
     private PlayFragment playFragment;
     private SensorManager sensorManager;
     private Sensor senAccelerometer;
 
     private final static int SAMPLING_TIME = 20;
-
+    private int amountOfKnocks = 0;
     private long lastUpdate = 0, timeFirstKnock = 0, knockingTime = 1500;
-    private final static double KNOCK_THRESHOLD = 0.04;
-    private float last_z, result = 0, avgValue = 0;
-    private static final int SHAKE_THRESHOLD = 600;
-    float corrected_value = 0;
-    int amountOfKnocks = 0;
+    private float last_z, avgValue = 0;
+    private final static double KNOCK_THRESHOLD = 0.3;
 
     private boolean knockActivated = false, firstStartup = true;
 
@@ -52,10 +44,6 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
             transaction.replace(R.id.container_main, playFragment);
             transaction.commit();
         }
-        //sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        //sensorManager.registerListener(this,
-        //        sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-        //        SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
@@ -108,7 +96,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
                 avgValue = Math.abs(avgValue - last_z);
                 //Log.d(TAG, "avgValue " + avgValue);
 
-                if (avgValue > 0.20) {
+                if (avgValue > KNOCK_THRESHOLD) {
                     timeFirstKnock = System.currentTimeMillis();
                     knockActivated = true;
                     amountOfKnocks++;
@@ -235,9 +223,5 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     protected void onResume() {
         super.onResume();
         sensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-    }
-
-    public void run(){
-
     }
 }
